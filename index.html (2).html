@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кинякин Александр Сергеевич — НПФ ЭИТЭК</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #f0f4f8;
+            --card: #ffffff;
+            --item: #f5f9ff;
+            --accent: #2563eb;
+            --accent-light: rgba(37, 99, 235, 0.08);
+            --accent-gradient: linear-gradient(135deg, #2563eb, #3b82f6);
+            --text: #1e293b;
+            --text-sec: #475569;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--card);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #f8fbff 0%, #f0f7ff 100%);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .company-logo {
+            height: 36px;
+            width: auto;
+            flex-shrink: 0;
+        }
+
+        .company-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-sec);
+            letter-spacing: 0.5px;
+        }
+
+        .profile {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .photo-wrap {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            flex-shrink: 0;
+        }
+
+        .photo-ring {
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+        }
+
+        .photo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--card);
+            position: relative;
+            z-index: 1;
+        }
+
+        .photo-fallback {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 3px solid var(--card);
+            background: var(--accent-light);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .photo-fallback svg { width: 28px; height: 28px; color: var(--accent); }
+
+        .status {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 14px;
+            height: 14px;
+            background: #10b981;
+            border: 2px solid var(--card);
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        .info h1 { 
+            font-size: 15px; 
+            font-weight: 700; 
+            line-height: 1.3;
+            color: var(--text);
+        }
+        .position { font-size: 12px; color: var(--text-sec); margin-top: 3px; line-height: 1.4; }
+
+        .content { padding: 14px 20px 18px; }
+
+        .contacts { display: flex; flex-direction: column; gap: 6px; }
+
+        .contact {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: var(--item);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .contact:hover { border-color: var(--accent); background: var(--accent-light); }
+        .contact.copied { border-color: var(--accent); background: var(--accent-light); }
+
+        .icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--accent-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .icon svg { width: 16px; height: 16px; color: var(--accent); }
+
+        .contact-text { flex: 1; min-width: 0; }
+        .label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .value { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .value a { color: inherit; text-decoration: none; }
+
+        .copy-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+
+        .copy-btn:hover { background: var(--accent-light); color: var(--accent); }
+        .copy-btn svg { width: 14px; height: 14px; }
+
+        .address {
+            margin-top: 8px;
+            padding: 10px 12px;
+            background: var(--item);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+            font-size: 12px;
+            color: var(--text-sec);
+            line-height: 1.4;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .btn {
+            padding: 11px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--item);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn:hover { border-color: var(--accent); background: var(--accent-light); }
+        .btn svg { width: 15px; height: 15px; }
+
+        .save-btn {
+            width: 100%;
+            margin-top: 12px;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: var(--accent);
+            color: #fff;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .save-btn:hover { background: #1d4ed8; }
+        .save-btn svg { width: 16px; height: 16px; }
+
+        .footer { text-align: center; padding: 0 0 14px; }
+        .footer a { font-size: 11px; color: var(--text-muted); text-decoration: none; }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--text);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 12px;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .card { animation: fadeIn 0.4s ease-out; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="header">
+        <svg class="company-logo" viewBox="0 0 136.26 49.47" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <style>.cls-1{fill:#5bb02e;}.cls-2{fill:#000000;}</style>
+            </defs>
+            <path class="cls-1" d="M31.77,26.78a7.09,7.09,0,1,1-14.17,0c0-3.91,7.09-11.28,7.09-11.28S31.77,22.87,31.77,26.78Z"/>
+            <path class="cls-1" d="M42.6,13.15A21.35,21.35,0,0,1,13.15,42.59l3.11-3.11a17.15,17.15,0,0,0,8.28,2.13,16.93,16.93,0,0,0,12.07-5,17.2,17.2,0,0,0,2.87-20.34l3.12-3.12m.34-5.44-8.11,8.12a13.48,13.48,0,0,1-19,19L7.71,42.94A24.94,24.94,0,0,0,42.94,7.71Z"/>
+            <path class="cls-2" d="M74.43,28.18q0,3.34-1.64,4.91a7.19,7.19,0,0,1-5.06,1.55q-3.63,0-5.22-1.51t-1.59-5.19V26.13H66.7v3.54c0,.93.33,1.4,1,1.4.48,0,.76-.18.85-.54a16.43,16.43,0,0,0,.13-2.65V24.05H65.33V20.68h3.33V16.74a5.39,5.39,0,0,0-.15-1.55c-.09-.3-.35-.44-.76-.44-.7,0-1,.46-1,1.37v2.66H60.92v-2c0-2.16.5-3.64,1.49-4.44s2.71-1.2,5.16-1.2a7.78,7.78,0,0,1,5.12,1.45,5.28,5.28,0,0,1,1.74,4.28Z"/>
+            <path class="cls-2" d="M90.22,34.47h-5V23.94L82.06,34.47H76.79V11.32h5V21.77l3.37-10.45h5Z"/>
+            <path class="cls-2" d="M104.74,11.33V16h-3.57V34.47h-6V16H91.59V11.33Z"/>
+            <path class="cls-2" d="M119.26,28.18c0,2.23-.54,3.87-1.64,4.91a7.18,7.18,0,0,1-5.06,1.55q-3.63,0-5.22-1.51t-1.58-5.19V26.13h5.77v3.54c0,.93.33,1.4,1,1.4.47,0,.76-.18.84-.54a15.27,15.27,0,0,0,.13-2.65V24.05h-3.33V20.68h3.33V16.74a5.9,5.9,0,0,0-.14-1.55c-.1-.3-.35-.44-.76-.44-.71,0-1.06.46-1.06,1.37v2.66h-5.77v-2c0-2.16.49-3.64,1.48-4.44s2.71-1.2,5.16-1.2a7.83,7.83,0,0,1,5.13,1.45,5.31,5.31,0,0,1,1.73,4.28Z"/>
+            <path class="cls-2" d="M121.62,11.32h6l0,9.78c1.14,0,1.72-.66,1.76-1.89l.11-4.52c0-1.66.37-2.79,1-3.37h5.56c-.55.56-.81,1.72-.8,3.49l0,4q0,3.6-4.06,4.1c2.73.34,4.08,1.72,4.06,4.16l0,3.69a6.39,6.39,0,0,0,.8,3.74h-5.56c-.65-.58-1-1.7-1-3.37V26.58A1.86,1.86,0,0,0,129,25.2a1.91,1.91,0,0,0-1.35-.53l0,9.8h-6Z"/>
+            <path class="cls-2" d="M14.34,33.34a13.48,13.48,0,0,1,19-19l8.12-8.11c-.37-.33-.74-.66-1.12-1a.63.63,0,0,0-.83,0L36.7,8.13a20,20,0,0,0-3.79-2.19l1-3.85a.63.63,0,0,0-.38-.75,24.85,24.85,0,0,0-5-1.33.62.62,0,0,0-.69.45l-1,3.85a21.37,21.37,0,0,0-4.38,0l-1-3.85a.62.62,0,0,0-.7-.45,25.21,25.21,0,0,0-5,1.33.64.64,0,0,0-.37.75l1,3.85a20.11,20.11,0,0,0-3.8,2.19L9.76,5.31a.63.63,0,0,0-.83,0C8.27,5.81,7.62,6.38,7,7S5.81,8.27,5.27,8.93a.63.63,0,0,0,0,.83l2.82,2.81a20.11,20.11,0,0,0-2.19,3.8l-3.85-1a.64.64,0,0,0-.75.37,25.21,25.21,0,0,0-1.33,5,.62.62,0,0,0,.45.7l3.85,1a21.37,21.37,0,0,0,0,4.38l-3.85,1a.62.62,0,0,0-.45.69,24.85,24.85,0,0,0,1.33,5,.63.63,0,0,0,.75.38l3.85-1A20,20,0,0,0,8.13,36.7L5.31,39.51a.63.63,0,0,0,0,.83c.3.38.63.75,1,1.12Z"/>
+        </svg>
+        <span class="company-name">ООО «НПФ ЭИТЭК»</span>
+    </div>
+
+    <div class="profile">
+        <div class="photo-wrap">
+            <div class="photo-ring"></div>
+            <img src="photo.jpg" alt="Кинякин Александр Сергеевич" class="photo" id="photo" onerror="this.style.display='none';document.getElementById('fallback').style.display='flex';">
+            <div class="photo-fallback" id="fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+            </div>
+            <div class="status"></div>
+        </div>
+        <div class="info">
+            <h1>Кинякин Александр Сергеевич</h1>
+            <div class="position">Технический директор<br>Кандидат технических наук</div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="contacts">
+            <div class="contact" onclick="copy('+74959261080, доб. 203', this)">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.11 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                </div>
+                <div class="contact-text">
+                    <div class="label">Телефон</div>
+                    <div class="value"><a href="tel:+74959261080">+7 (495) 926-1080, доб. 203</a></div>
+                </div>
+                <button class="copy-btn" onclick="event.stopPropagation();copy('+7 (495) 926-1080, доб. 203',this.closest('.contact'))">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                </button>
+            </div>
+
+            <div class="contact" onclick="copy('+79175692777', this)">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="5" y="2" width="14" height="20" rx="2"/>
+                        <line x1="12" y1="18" x2="12.01" y2="18"/>
+                    </svg>
+                </div>
+                <div class="contact-text">
+                    <div class="label">Мобильный</div>
+                    <div class="value"><a href="tel:+79175692777">+7 (917) 569-2777</a></div>
+                </div>
+                <button class="copy-btn" onclick="event.stopPropagation();copy('+7 (917) 569-2777',this.closest('.contact'))">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                </button>
+            </div>
+
+            <div class="contact" onclick="copy('kinyakin@eitek.ru', this)">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                </div>
+                <div class="contact-text">
+                    <div class="label">Email</div>
+                    <div class="value"><a href="mailto:kinyakin@eitek.ru">kinyakin@eitek.ru</a></div>
+                </div>
+                <button class="copy-btn" onclick="event.stopPropagation();copy('kinyakin@eitek.ru',this.closest('.contact'))">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                </button>
+            </div>
+
+            <div class="contact" onclick="copy('https://www.eitek.ru', this)">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                    </svg>
+                </div>
+                <div class="contact-text">
+                    <div class="label">Сайт</div>
+                    <div class="value"><a href="https://www.eitek.ru" target="_blank">www.eitek.ru</a></div>
+                </div>
+                <button class="copy-btn" onclick="event.stopPropagation();copy('https://www.eitek.ru',this.closest('.contact'))">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="address">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span>117292, г. Москва, ул. Ивана Бабушкина, д. 10</span>
+        </div>
+
+        <div class="actions">
+            <a href="https://t.me/+79175692777" target="_blank" class="btn">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                Telegram
+            </a>
+            <a href="mailto:kinyakin@eitek.ru" class="btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                Написать
+            </a>
+        </div>
+
+        <button class="save-btn" onclick="saveContact()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+            Сохранить контакт
+        </button>
+
+        <div class="footer">
+            <a href="https://www.eitek.ru" target="_blank">www.eitek.ru</a>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function copy(text, el) {
+    navigator.clipboard.writeText(text).then(() => {
+        el.classList.add('copied');
+        showToast('Скопировано: ' + text);
+        setTimeout(() => el.classList.remove('copied'), 1500);
+    });
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function saveContact() {
+    const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:Кинякин Александр Сергеевич
+N:Кинякин;Александр;Сергеевич;;
+ORG:ООО «НПФ ЭИТЭК»
+TITLE:Технический директор
+TEL;TYPE=WORK,VOICE:+74959261080;EXT=203
+TEL;TYPE=CELL:+79175692777
+EMAIL:kinyakin@eitek.ru
+URL:https://www.eitek.ru
+ADR;TYPE=WORK:;;ул. Ивана Бабушкина, д. 10;Москва;;117292;Россия
+END:VCARD`;
+    
+    const blob = new Blob([vcard], {type: 'text/vcard'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Кинякин_Александр.vcf';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('Контакт сохранён');
+}
+</script>
+
+</body>
+</html>
